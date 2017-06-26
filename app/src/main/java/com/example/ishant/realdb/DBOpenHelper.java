@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,7 @@ import java.util.List;
  */
 
 public class DBOpenHelper extends SQLiteOpenHelper {
-
+    MainActivity o = new MainActivity();
     private static final String LOGTAG = "EXPLORECA";
 
     private static final String DATABASE_NAME = "UserInfo.db";
@@ -107,28 +110,56 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, "ID = ?",new String[] {id});
     }
-    public List<ContactsConstructor> getAllContacts() {
+    public List<ContactsConstructor> getAllContacts(String gr) {
         List<ContactsConstructor> contactList = new ArrayList<ContactsConstructor>();
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+        String a = "A";
+        String b = "B";
+        switch(gr) {
+            // Select All Query
+            case "A" : {
+                String selectQuery = "SELECT  * FROM Contact_Info WHERE groups = 'A'";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                ContactsConstructor contact = new ContactsConstructor();
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
 
-                contact.setPhoneNumber(cursor.getString(3));
-                // Adding contact to list
-                contactList.add(contact);
-            } while (cursor.moveToNext());
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    ContactsConstructor contact = new ContactsConstructor();
+
+                    contact.setPhoneNumber(cursor.getString(3));
+                    // Adding contact to list
+                    contactList.add(contact);
+                } while (cursor.moveToNext());
+            } }
+            break;
+            case "B" : {
+                String selectQuery = "SELECT  * FROM Contact_Info WHERE groups = 'B'";
+
+
+                SQLiteDatabase db = this.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+
+                // looping through all rows and adding to list
+                if (cursor.moveToFirst()) {
+                    do {
+                        ContactsConstructor contact = new ContactsConstructor();
+
+                        contact.setPhoneNumber(cursor.getString(3));
+                        // Adding contact to list
+                        contactList.add(contact);
+                    } while (cursor.moveToNext());
+                } }
+            break;
+
+            default:
         }
 
-        // return contact list
         return contactList;
-    }
+         }
+
+
 
 }
 
