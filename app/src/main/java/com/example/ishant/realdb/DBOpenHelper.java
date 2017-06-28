@@ -22,7 +22,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     private static final String LOGTAG = "EXPLORECA";
 
     private static final String DATABASE_NAME = "UserInfo.db";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     public static final String TABLE_NAME = "Contact_Info";
     public static final String COLUMN_ID = "Id";
@@ -86,6 +86,24 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
         Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
         return res;
+    }
+    public List<String> getAllUsers()
+    {
+        List<String> userlist=new ArrayList<>();
+        //get readable database
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT groups FROM Contact_Info",null);
+        if(cursor.moveToFirst())
+        {
+            do {
+                userlist.add(cursor.getString(0));
+            }while (cursor.moveToNext());
+        }
+        //close the cursor
+        cursor.close();
+        //close the database
+        db.close();
+        return userlist;
     }
 
     public boolean updateData(String id,String name,String email,String phno,String groups,String team) {

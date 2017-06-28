@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
 
         dbHelper = new DBOpenHelper(this);
         database = dbHelper.getWritableDatabase();
@@ -63,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
         sms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              SendMsg();
+                Intent o = new Intent(MainActivity.this,Main2Activity.class);
+                startActivity(o);
+              //SendMsg();
             }
         });
 
